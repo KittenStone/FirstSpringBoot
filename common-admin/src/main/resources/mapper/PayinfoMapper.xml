@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xieke.admin.mapper.PayinfoMapper">
+
+    <resultMap type="com.xieke.admin.entity.Payinfo" id="BaseResultMap">
+                        <id column="id" property="id" />
+                                <result property="studentid" column="StudentId"/>
+
+                                <result property="payamount" column="PayAmount"/>
+
+                                <result property="paytime" column="PayTime"/>
+
+                </resultMap>
+    <select id="getCountByPage" resultType="int">
+
+        SELECT
+           count(*)
+        FROM
+            payinfo pay
+            INNER JOIN sys_user syuser ON pay.StudentId = syuser.id
+        <where>
+            <if test="searchKey != null and searchKey != ''">
+                syuser.`name` LIKE concat('%',#{searchKey} ,'%')
+            </if>
+
+        </where>
+
+    </select>
+    <select id="getDataListByPage" resultType="com.xieke.admin.entity.PayInfoBean">
+        SELECT
+        pay.id,
+        syuser.`name`,
+        pay.PayAmount ,
+        pay.PayTime
+        FROM
+        payinfo pay
+        INNER JOIN sys_user syuser ON pay.StudentId = syuser.id
+        <where>
+            <if test="searchKey != null and searchKey != ''">
+                syuser.`name` LIKE concat('%',#{searchKey} ,'%')
+            </if>
+
+        </where>
+
+
+    </select>
+
+</mapper>

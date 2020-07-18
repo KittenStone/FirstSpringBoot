@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xieke.admin.mapper.LeaveCourseMapper">
+
+    <resultMap type="com.xieke.admin.entity.LeaveCourse" id="BaseResultMap">
+                        <id column="id" property="id" />
+                                <result property="chlsId" column="chls_id"/>
+                                <result property="leveaUser" column="levea_user"/>
+                                <result property="comment" column="comment"/>
+                </resultMap>
+    <select id="isLeaved" resultType="int">
+
+        SELECT
+            COUNT(*)
+        FROM
+            leave_course
+        WHERE
+            chls_id = #{chlsId}
+            AND levea_user = #{userId}
+
+    </select>
+    <select id="selectCount" resultType="int">
+        SELECT
+           count(*)
+        FROM
+            leave_course leacou
+            INNER JOIN choose_lesson chle  ON leacou.chls_id=chle.id
+            INNER JOIN lesson_schedule les ON chle.les_sche_id=les.id
+            INNER JOIN course cous ON les.course_id = cous.CID
+            INNER JOIN teach_week weeks ON les.week_id=weeks.id
+            INNER JOIN teach_time times ON les.time_id=times.id
+            INNER JOIN sys_user syuser ON les.teacher_id=syuser.id
+            INNER JOIN sys_user stu ON chle.choose_user=stu.id
+            <where>
+                <if test="searchKey != null and searchKey != ''">
+                    cous.CName LIKE concat('%',#{searchKey} ,'%')
+                </if>
+            </where>
+    </select>
+
+    <select id="selectDataList" resultType="com.xieke.admin.entity.LeaveCourseBean">
+        SELECT
+        leacou.id,
+        cous.CName as cname,
+        cous.Price as price,
+        CONCAT('第 ',weeks.weeks,' 周') AS weeks,
+        CONCAT('第 ',times.teach_num,' 节   ',times.start_time,'-',times.end_time )as times,
+        syuser.`name` as teachName,
+        stu.name as stuName,
+        leacou.`comment`
+        FROM
+        leave_course leacou
+        INNER JOIN choose_lesson chle  ON leacou.chls_id=chle.id
+        INNER JOIN lesson_schedule les ON chle.les_sche_id=les.id
+        INNER JOIN course cous ON les.course_id = cous.CID
+        INNER JOIN teach_week weeks ON les.week_id=weeks.id
+        INNER JOIN teach_time times ON les.time_id=times.id
+        INNER JOIN sys_user syuser ON les.teacher_id=syuser.id
+        INNER JOIN sys_user stu ON chle.choose_user=stu.id
+        <where>
+            <if test="searchKey != null and searchKey != ''">
+                cous.CName LIKE concat('%',#{searchKey} ,'%')
+            </if>
+        </where>
+
+    </select>
+
+    <select id="selectStuCount" resultType="int">
+        SELECT
+        count(*)
+        FROM
+        leave_course leacou
+        INNER JOIN choose_lesson chle  ON leacou.chls_id=chle.id
+        INNER JOIN lesson_schedule les ON chle.les_sche_id=les.id
+        INNER JOIN course cous ON les.course_id = cous.CID
+        INNER JOIN teach_week weeks ON les.week_id=weeks.id
+        INNER JOIN teach_time times ON les.time_id=times.id
+        INNER JOIN sys_user syuser ON les.teacher_id=syuser.id
+        INNER JOIN sys_user stu ON chle.choose_user=stu.id
+        <where>
+            <if test="userId != null">
+                stu.id=#{userId}
+            </if>
+            <if test="searchKey != null and searchKey != ''">
+               AND cous.CName LIKE concat('%',#{searchKey} ,'%')
+            </if>
+        </where>
+
+    </select>
+    <select id="selectStuDataList" resultType="com.xieke.admin.entity.LeaveCourseBean">
+        SELECT
+            leacou.id,
+            cous.CName as cname,
+            cous.Price as price,
+            CONCAT('第 ',weeks.weeks,' 周') AS weeks,
+            CONCAT('第 ',times.teach_num,' 节   ',times.start_time,'-',times.end_time )as times,
+            syuser.`name` as teachName,
+            stu.name as stuName,
+            leacou.`comment`
+        FROM
+            leave_course leacou
+            INNER JOIN choose_lesson chle  ON leacou.chls_id=chle.id
+            INNER JOIN lesson_schedule les ON chle.les_sche_id=les.id
+            INNER JOIN course cous ON les.course_id = cous.CID
+            INNER JOIN teach_week weeks ON les.week_id=weeks.id
+            INNER JOIN teach_time times ON les.time_id=times.id
+            INNER JOIN sys_user syuser ON les.teacher_id=syuser.id
+            INNER JOIN sys_user stu ON chle.choose_user=stu.id
+         <where>
+             <if test="userId != null">
+                 stu.id=#{userId}
+             </if>
+             <if test="searchKey != null and searchKey != ''">
+               AND  cous.CName LIKE concat('%',#{searchKey} ,'%')
+             </if>
+         </where>
+    </select>
+
+    <select id="selectTeachCount" resultType="int">
+        SELECT
+        count(*)
+        FROM
+        leave_course leacou
+        INNER JOIN choose_lesson chle  ON leacou.chls_id=chle.id
+        INNER JOIN lesson_schedule les ON chle.les_sche_id=les.id
+        INNER JOIN course cous ON les.course_id = cous.CID
+        INNER JOIN teach_week weeks ON les.week_id=weeks.id
+        INNER JOIN teach_time times ON les.time_id=times.id
+        INNER JOIN sys_user syuser ON les.teacher_id=syuser.id
+        INNER JOIN sys_user stu ON chle.choose_user=stu.id
+        <where>
+            <if test="userId != null">
+                syuser.id=#{userId}
+            </if>
+            <if test="searchKey != null and searchKey != ''">
+             AND   cous.CName LIKE concat('%',#{searchKey} ,'%')
+            </if>
+        </where>
+
+    </select>
+    <select id="selectTeachDataList" resultType="com.xieke.admin.entity.LeaveCourseBean">
+        SELECT
+        leacou.id,
+        cous.CName as cname,
+        cous.Price as price,
+        CONCAT('第 ',weeks.weeks,' 周') AS weeks,
+        CONCAT('第 ',times.teach_num,' 节   ',times.start_time,'-',times.end_time )as times,
+        syuser.`name` as teachName,
+        stu.name as stuName,
+        leacou.`comment`
+        FROM
+        leave_course leacou
+        INNER JOIN choose_lesson chle  ON leacou.chls_id=chle.id
+        INNER JOIN lesson_schedule les ON chle.les_sche_id=les.id
+        INNER JOIN course cous ON les.course_id = cous.CID
+        INNER JOIN teach_week weeks ON les.week_id=weeks.id
+        INNER JOIN teach_time times ON les.time_id=times.id
+        INNER JOIN sys_user syuser ON les.teacher_id=syuser.id
+        INNER JOIN sys_user stu ON chle.choose_user=stu.id
+        <where>
+            <if test="userId != null">
+                syuser.id=#{userId}
+            </if>
+            <if test="searchKey != null and searchKey != ''">
+              AND  cous.CName LIKE concat('%',#{searchKey} ,'%')
+            </if>
+        </where>
+
+    </select>
+
+</mapper>

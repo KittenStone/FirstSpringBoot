@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>编辑用户--教务管理系统 </title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="/static/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="/static/css/public.css" media="all" />
+</head>
+<body class="childrenBody">
+<form class="layui-form linksAdd">
+	<input type="hidden" value="" id="id" name="id">
+	<input type="hidden" value="" id="roleId">
+	<div class="layui-form-item">
+		<label class="layui-form-label">用户姓名</label>
+		<div class="layui-input-block">
+			<input type="text" class="layui-input" id="name" name="name" lay-verify="required" placeholder="请输入用户姓名">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">所属角色</label>
+		<div class="layui-input-block">
+			<select name="roleId" id="roleSelect">
+				<option value="">请选择角色</option>
+			</select>
+		</div>
+	</div>
+	<div class="layui-form-item" id="une">
+		<label class="layui-form-label">登录账户</label>
+		<div class="layui-input-block">
+			<input type="text" class="layui-input" name="userName" lay-verify="required" placeholder="请输入登录名称">
+		</div>
+	</div>
+	<div class="layui-form-item" id="pwd1">
+		<label class="layui-form-label">登录密码</label>
+		<div class="layui-input-block">
+			<input type="password" placeholder="请输入登录密码" name="passWord" lay-verify="required|newPwd" id="newPwd" class="layui-input">
+		</div>
+	</div>
+	<div class="layui-form-item" id="pwd2">
+		<label class="layui-form-label">确认密码</label>
+		<div class="layui-input-block">
+			<input type="password" placeholder="请确认登录密码" lay-verify="required|confirmPwd" class="layui-input">
+		</div>
+	</div>
+
+
+
+
+
+
+	<div class="layui-form-item" id="age">
+		<label class="layui-form-label">年龄</label>
+		<div class="layui-input-block">
+			<input type="number" class="layui-input" name="age" lay-verify="required" placeholder="请输入年龄">
+		</div>
+	</div>
+	<div class="layui-form-item" id="sex">
+		<label class="layui-form-label">性别</label>
+		<div class="layui-input-block">
+			<input type="text" class="layui-input" name="sex" lay-verify="required" placeholder="请输入性别">
+		</div>
+	</div>
+	<div class="layui-form-item" id="qq">
+		<label class="layui-form-label">QQ</label>
+		<div class="layui-input-block">
+			<input type="text" class="layui-input" name="qq" lay-verify="required" placeholder="请输入qq">
+		</div>
+	</div>
+	<div class="layui-form-item" id="phone">
+		<label class="layui-form-label">电话</label>
+		<div class="layui-input-block">
+			<input type="text" class="layui-input" name="phone" lay-verify="required" placeholder="请输入电话">
+		</div>
+	</div>
+	<div class="layui-form-item" id="email">
+		<label class="layui-form-label">邮箱</label>
+		<div class="layui-input-block">
+			<input type="text" class="layui-input" name="email" lay-verify="required" placeholder="请输入邮箱">
+		</div>
+	</div>
+	<div class="layui-form-item" id="rate">
+		<label class="layui-form-label">支付折扣</label>
+		<div class="layui-input-block">
+			<input type="number" class="layui-input" name="rate" lay-verify="required" placeholder="支付折扣">
+		</div>
+	</div>
+
+	<div class="layui-form-item" id="amount">
+		<label class="layui-form-label">账户余额</label>
+		<div class="layui-input-block">
+			<input type="number" class="layui-input" name="amount" lay-verify="required" placeholder="账户余额">
+		</div>
+	</div>
+
+
+
+
+	<div class="layui-form-item">
+		<label class="layui-form-label">用户状态</label>
+		<div class="layui-input-block">
+			<select name="state" id="stateSelect">
+				<option value="1">启用</option>
+				<option value="0">禁用</option>
+				<option value="2">锁定</option>
+			</select>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<button class="layui-btn layui-block" lay-filter="addUser" lay-submit>保存</button>
+	</div>
+</form>
+<script type="text/javascript" src="/static/layui/layui.js"></script>
+<script type="text/javascript" src="/static/js/user/info.js"></script>
+</body>
+</html>

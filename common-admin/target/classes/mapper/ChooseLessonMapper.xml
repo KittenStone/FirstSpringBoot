@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xieke.admin.mapper.ChooseLessonMapper">
+
+    <resultMap type="com.xieke.admin.entity.ChooseLesson" id="BaseResultMap">
+                        <id column="id" property="id" />
+                                <result property="lesScheId" column="les_sche_id"/>
+                                <result property="chooseUser" column="choose_user"/>
+                                <result property="comment" column="comment"/>
+                                <result property="status" column="status"/>
+                </resultMap>
+    <select id="isChoose" resultType="int">
+
+        SELECT count(*) FROM choose_lesson WHERE  les_sche_id=#{lsId}  AND choose_user=#{userId}
+
+    </select>
+    <select id="selectCourseAmount" resultType="java.lang.Double">
+
+        SELECT
+            sum(cus.Price) AS Price
+        FROM
+            lesson_schedule les
+            INNER JOIN course cus ON les.course_id = cus.CID
+        WHERE
+        les.id IN
+       <foreach collection="idList" index="index" item="entry" open="(" close=")" separator=",">
+           #{entry}
+       </foreach>
+
+
+    </select>
+    <select id="selectJoinListData" resultType="com.xieke.admin.entity.ChooseLessonBean">
+        SELECT
+            chle.id,
+            cous.CName as cname,
+            cous.Price as price,
+            CONCAT('第 ',weeks.weeks,' 周') AS weeks,
+            CONCAT('第 ',times.teach_num,' 节   ',times.start_time,'-',times.end_time )as times,
+            syuser.`name` as teachName,
+            stu.name as stuName,
+            les.`status`
+        FROM
+            choose_lesson chle
+            INNER JOIN lesson_schedule les ON chle.les_sche_id=les.id
+            INNER JOIN course cous ON les.course_id = cous.CID
+            INNER JOIN teach_week weeks ON les.week_id=weeks.id
+            INNER JOIN teach_time times ON les.time_id=times.id
+            INNER JOIN sys_user syuser ON les.teacher_id=syuser.id
+            INNER JOIN sys_user stu ON chle.choose_user=stu.id
+        <where>
+            <if test="searchKey != null and searchKey != ''">
+                cous.CName LIKE concat('%',#{searchKey,jdbcType=VARCHAR} ,'%')
+            </if>
+        </where>
+        LIMIT #{start} ,#{end}
+    </select>
+    <select id="selectJoinCount" resultType="int">
+        SELECT
+        count(chle.id)
+        FROM
+        choose_lesson chle
+        INNER JOIN lesson_schedule les ON chle.les_sche_id=les.id
+        INNER JOIN course cous ON les.course_id = cous.CID
+        INNER JOIN teach_week weeks ON les.week_id=weeks.id
+        INNER JOIN teach_time times ON les.time_id=times.id
+        INNER JOIN sys_user syuser ON les.teacher_id=syuser.id
+        INNER JOIN sys_user stu ON chle.choose_user=stu.id
+        <where>
+            <if test="searchKey != null and searchKey != ''">
+                cous.CName LIKE concat('%',#{searchKey,jdbcType=VARCHAR} ,'%')
+            </if>
+        </where>
+    </select>
+    <select id="selectStuChooseDataList" resultType="com.xieke.admin.entity.ChooseLessonBean">
+
+        SELECT
+        chle.id,
+        cous.CName as cname,
+        cous.Price as price,
+        CONCAT('第 ',weeks.weeks,' 周') AS weeks,
+        CONCAT('第 ',times.teach_num,' 节   ',times.start_time,'-',times.end_time )as times,
+        syuser.`name` as teachName,
+        stu.name as stuName,
+        les.`status`
+        FROM
+        choose_lesson chle
+        INNER JOIN lesson_schedule les ON chle.les_sche_id=les.id
+        INNER JOIN course cous ON les.course_id = cous.CID
+        INNER JOIN teach_week weeks ON les.week_id=weeks.id
+        INNER JOIN teach_time times ON les.time_id=times.id
+        INNER JOIN sys_user syuser ON les.teacher_id=syuser.id
+        INNER JOIN sys_user stu ON chle.choose_user=stu.id
+        <where>
+            <if test="userId != null">
+                  chle.choose_user=#{userId}
+            </if>
+            <if test="searchKey != null and searchKey != ''">
+                and cous.CName LIKE concat('%',#{searchKey,jdbcType=VARCHAR} ,'%')
+            </if>
+        </where>
+        LIMIT #{start} ,#{end}
+
+
+    </select>
+    <select id="selectStuChooseDataCount" resultType="int">
+        SELECT
+        count(chle.id)
+        FROM
+        choose_lesson chle
+        INNER JOIN lesson_schedule les ON chle.les_sche_id=les.id
+        INNER JOIN course cous ON les.course_id = cous.CID
+        INNER JOIN teach_week weeks ON les.week_id=weeks.id
+        INNER JOIN teach_time times ON les.time_id=times.id
+        INNER JOIN sys_user syuser ON les.teacher_id=syuser.id
+        INNER JOIN sys_user stu ON chle.choose_user=stu.id
+        <where>
+            <if test="userId != null">
+                  chle.choose_user=#{userId}
+            </if>
+            <if test="searchKey != null and searchKey != ''">
+                AND cous.CName LIKE concat('%',#{searchKey,jdbcType=VARCHAR} ,'%')
+            </if>
+
+        </where>
+    </select>
+    <select id="selectTeachChooseDataList" resultType="com.xieke.admin.entity.ChooseLessonBean">
+        SELECT
+        chle.id,
+        cous.CName as cname,
+        cous.Price as price,
+        CONCAT('第 ',weeks.weeks,' 周') AS weeks,
+        CONCAT('第 ',times.teach_num,' 节   ',times.start_time,'-',times.end_time )as times,
+        syuser.`name` as teachName,
+        stu.name as stuName,
+        les.`status`
+        FROM
+        choose_lesson chle
+        INNER JOIN lesson_schedule les ON chle.les_sche_id=les.id
+        INNER JOIN course cous ON les.course_id = cous.CID
+        INNER JOIN teach_week weeks ON les.week_id=weeks.id
+        INNER JOIN teach_time times ON les.time_id=times.id
+        INNER JOIN sys_user syuser ON les.teacher_id=syuser.id
+        INNER JOIN sys_user stu ON chle.choose_user=stu.id
+        <where>
+            <if test="userId != null">
+                  les.teacher_id=#{userId}
+            </if>
+            <if test="searchKey != null and searchKey != ''">
+               AND cous.CName LIKE concat('%',#{searchKey,jdbcType=VARCHAR} ,'%')
+            </if>
+        </where>
+        LIMIT #{start} ,#{end}
+
+    </select>
+    <select id="selectTeachChooseDataCount" resultType="int">
+        SELECT
+        count(chle.id)
+        FROM
+        choose_lesson chle
+        INNER JOIN lesson_schedule les ON chle.les_sche_id=les.id
+        INNER JOIN course cous ON les.course_id = cous.CID
+        INNER JOIN teach_week weeks ON les.week_id=weeks.id
+        INNER JOIN teach_time times ON les.time_id=times.id
+        INNER JOIN sys_user syuser ON les.teacher_id=syuser.id
+        INNER JOIN sys_user stu ON chle.choose_user=stu.id
+        <where>
+            <if test="userId != null">
+                  les.teacher_id=#{userId}
+            </if>
+            <if test="searchKey != null and searchKey != ''">
+              AND  cous.CName LIKE concat('%',#{searchKey,jdbcType=VARCHAR} ,'%')
+            </if>
+        </where>
+    </select>
+    <select id="selectIdByChooseId" resultType="java.lang.Integer">
+
+        SELECT
+            lesche.id
+        FROM
+            choose_lesson chles
+            INNER JOIN lesson_schedule lesche ON chles.les_sche_id = lesche.id
+        WHERE
+            chles.id = #{chooseId}
+        LIMIT 1
+
+
+    </select>
+    <update id="updateSchduleByTimeWeek">
+
+        UPDATE lesson_schedule
+        SET week_id = #{weeks} ,
+            time_id = #{times},
+            status='已调换课'
+        WHERE
+            id = #{id}
+
+    </update>
+
+</mapper>

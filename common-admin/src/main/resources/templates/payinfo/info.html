@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>订单信息信息--layui后台管理模板 2.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all" />
+    <link rel="stylesheet" href="/static/css/public.css" media="all" />
+</head>
+<body class="childrenBody">
+<form class="layui-form linksAdd">
+    <input type="hidden" value="" id="id" name="id">
+                    <div class="layui-form-item">
+        <label class="layui-form-label">学生id</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" id="studentid" name="studentid" lay-verify="required" placeholder="请输入学生id">
+        </div>
+    </div>
+                <div class="layui-form-item">
+        <label class="layui-form-label">管理员id</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" id="adminuserid" name="adminuserid" lay-verify="required" placeholder="请输入管理员id">
+        </div>
+    </div>
+                <div class="layui-form-item">
+        <label class="layui-form-label">支付方式</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" id="paymethod" name="paymethod" lay-verify="required" placeholder="请输入支付方式">
+        </div>
+    </div>
+                <div class="layui-form-item">
+        <label class="layui-form-label">支付金额</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" id="payamount" name="payamount" lay-verify="required" placeholder="请输入支付金额">
+        </div>
+    </div>
+                <div class="layui-form-item">
+        <label class="layui-form-label">支付账户</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" id="payaccount" name="payaccount" lay-verify="required" placeholder="请输入支付账户">
+        </div>
+    </div>
+                <div class="layui-form-item">
+        <label class="layui-form-label">支付时间</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" id="paytime" name="paytime" lay-verify="required" placeholder="请输入支付时间">
+        </div>
+    </div>
+                <div class="layui-form-item">
+        <label class="layui-form-label">确认时间</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" id="confirmtime" name="confirmtime" lay-verify="required" placeholder="请输入确认时间">
+        </div>
+    </div>
+            <div class="layui-form-item">
+        <button class="layui-btn layui-block" lay-filter="addPayinfo" lay-submit>保存</button>
+    </div>
+</form>
+<script type="text/javascript" src="/static/layui/layui.js"></script>
+<script type="text/javascript" src="/static/js/payinfo/info.js"></script>
+</body>
+</html>

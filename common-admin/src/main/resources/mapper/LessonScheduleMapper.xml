@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xieke.admin.mapper.LessonScheduleMapper">
+
+    <resultMap type="com.xieke.admin.entity.LessonSchedule" id="BaseResultMap">
+                        <id column="id" property="id" />
+                                <result property="courseId" column="course_id"/>
+                                <result property="weekId" column="week_id"/>
+                                <result property="timeId" column="time_id"/>
+                                <result property="comment" column="comment"/>
+                                <result property="teacherId" column="teacher_id"/>
+                                <result property="status" column="status"/>
+                </resultMap>
+    <select id="hasChoosed" resultType="int">
+
+        SELECT COUNT(0) FROM lesson_schedule les WHERE les.course_id=#{courseId}
+                                                       AND les.week_id=#{weekId}
+                                                       AND les.time_id=#{timeId}
+                                                       AND les.teacher_id=#{teacherId}
+
+    </select>
+    <select id="selectCount" resultType="int">
+
+        SELECT
+           count(les.id)
+
+        FROM
+            lesson_schedule les
+            INNER JOIN course cous ON les.course_id = cous.CID
+            INNER JOIN teach_week weeks ON les.week_id=weeks.id
+            INNER JOIN teach_time times ON les.time_id=times.id
+            INNER JOIN sys_user syuser ON les.teacher_id=syuser.id
+        <where>
+            <if test="searchKey != null and searchKey != ''">
+                cous.CName LIKE  concat('%',#{searchKey,jdbcType=VARCHAR} ,'%')
+            </if>
+
+
+        </where>
+
+    </select>
+    <select id="listJoinData" resultType="com.xieke.admin.entity.LessonScheduleBean">
+
+        SELECT
+            les.id,
+            cous.CName as cname,
+            cous.Price as price,
+            CONCAT('第 ',weeks.weeks,' 周') AS weeks,
+            CONCAT('第 ',times.teach_num,' 节   ',times.start_time,'-',times.end_time )as times,
+            syuser.`name` as teachName,
+            les.`comment`,
+            les.`status`
+        FROM
+            lesson_schedule les
+            INNER JOIN course cous ON les.course_id = cous.CID
+            INNER JOIN teach_week weeks ON les.week_id=weeks.id
+            INNER JOIN teach_time times ON les.time_id=times.id
+            INNER JOIN sys_user syuser ON les.teacher_id=syuser.id
+        <where>
+            <if test="searchKey != null and searchKey != ''">
+                cous.CName LIKE  concat('%',#{searchKey,jdbcType=VARCHAR} ,'%')
+            </if>
+        </where>
+
+        LIMIT #{start},#{end}
+
+
+    </select>
+
+</mapper>
